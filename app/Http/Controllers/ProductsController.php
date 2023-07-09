@@ -21,32 +21,37 @@ class ProductsController extends Controller
 
     public function add(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|min:2',
-            'price' => 'required|numeric',
-            'description' => 'required|string',
-            'isnew' => 'required|numeric',
-            'record' => 'nullable|numeric',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|min:2',
+                'image' => 'required',
+                'price' => 'required|numeric',
+                'description' => 'required|string',
+                'isnew' => 'required|numeric',
+                'record' => 'nullable|numeric',
+            ]);
 
-        $data = [
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description,
-            'status' => $request->status ?? 1,
-        ];
+            $data = [
+                'name' => $request->name,
+                'price' => $request->price,
+                'description' => $request->description,
+                'status' => $request->status ?? 1,
+            ];
 
-        if ($request->has('image')) {
-            $data['img'] = $this->uploadImage($request->file('image'), Carbon::now()->format('YmdHs'), $request->image);
+            if ($request->has('image')) {
+                $data['img'] = $this->uploadImage($request->file('image'), Carbon::now()->format('YmdHs'), $request->image);
+            }
+
+            if ($request->isnew == 1) {
+                Product::create($data);
+            } else {
+                Product::where('id', $request->record)->update($data);
+            }
+
+            return redirect()->back()->with(['code' => 1, 'color' => 'success', 'msg' => 'Successfully ' . (($request->isnew == 1) ? 'Added' : 'Updated')]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['code' => 0, 'color' => 'danger', 'msg' => $e->getMessage()]);
         }
-
-        if ($request->isnew == 1) {
-            Product::create($data);
-        } else {
-            Product::where('id', $request->record)->update($data);
-        }
-
-        return redirect()->back()->with(['code' => 1, 'color' => 'success', 'msg' => 'Successfully ' . (($request->isnew == 1) ? 'Added' : 'Updated')]);
     }
 
     public function uploadImage($valid, $name, $file)

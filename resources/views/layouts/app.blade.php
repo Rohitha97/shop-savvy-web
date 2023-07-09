@@ -23,11 +23,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    <link rel="stylesheet" href="{{asset('assets/notiflix/notiflix-3.2.2.min.css')}}">
-    <script src="{{asset('assets/notiflix/notiflix-3.2.2.min.js')}}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/notiflix/notiflix-3.2.2.min.css') }}">
+
+    <script src="{{ asset('assets/notiflix/notiflix-3.2.2.min.js') }}"></script>
+    <link href="{{ URL::asset('assets/css/custom2.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+
 
     <style>
-        .page-item span{
+        .page-item span {
             color: white !important;
         }
     </style>
@@ -39,6 +42,7 @@
     <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
+    <script src="../../assets/js/plugins/datatables.js"></script>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {

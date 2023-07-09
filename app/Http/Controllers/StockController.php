@@ -41,11 +41,11 @@ class StockController extends Controller
                 Stock::where('id', $request->record)->update($data);
             }
             DB::commit();
+            return redirect()->back()->with(['code' => 1, 'color' => 'success', 'msg' => 'Successfully ' . (($request->isnew == 1) ? 'Registered' : 'Updated')]);
         } catch (\Throwable $th) {
             DB::rollBack();
+            return redirect()->back()->with(['code' => 0, 'color' => 'danger', 'msg' => $th->getMessage()]);
         }
-
-        return redirect()->back()->with(['code' => 1, 'color' => 'success', 'msg' => 'Successfully ' . (($request->isnew == 1) ? 'Registered' : 'Updated')]);
     }
 
     public function deleteOne(Request $request)

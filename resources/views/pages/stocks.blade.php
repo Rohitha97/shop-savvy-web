@@ -64,8 +64,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <form autocomplete="off" action="{{ route('admin.stocks.enroll') }}" enctype="multipart/form-data"
-                        method="POST" id="enrollment_form">
+                    <form autocomplete="off" action="{{ route('admin.stocks.add') }}" enctype="multipart/form-data"
+                        method="POST" id="addment_form">
                         @csrf
                         <input type="hidden" id="isnew" name="isnew" value="{{ old('isnew') ? old('isnew') : '1' }}">
                         <input type="hidden" id="record" name="record"
@@ -121,11 +121,12 @@
                                             <hr class="my-2">
                                             <div class="row">
                                                 <div class="col-md-6"> <input id="submitbtn"
-                                                        class="btn text-white bg-success w-100" type="submit" value="Submit">
+                                                        class="btn text-white bg-success w-100" type="submit"
+                                                        value="Submit">
                                                 </div>
                                                 <div class="col-md-6 mt-md-0 mt-1"><input
                                                         class="btn bg-gradient-danger w-100" type="button"
-                                                        form="enrollment_form" id="resetbtn" value="Reset">
+                                                        form="addment_form" id="resetbtn" value="Reset">
                                                 </div>
                                             </div>
 

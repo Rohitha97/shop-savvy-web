@@ -14,7 +14,7 @@
                         <div class="card-body">
                             <form action="{{ route('admin.orders') }}">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="start"><small class="text-dark">Start
                                                 Date{!! required_mark() !!}</small></label>
                                         <input value="{{ request()->start ?? '' }}" type="datetime-local" name="start"
@@ -23,7 +23,7 @@
                                             <span class="text-danger"><small class="text-xs">{{ $message }}</small></span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="end"><small class="text-dark">End
                                                 Date{!! required_mark() !!}</small></label>
                                         <input value="{{ request()->end ?? '' }}" type="datetime-local" name="end"
@@ -32,12 +32,9 @@
                                             <span class="text-danger"><small class="text-xs">{{ $message }}</small></span>
                                         @enderror
                                     </div>
-                                    <div class="col-md-12 mt-3">
-                                        <center>
-                                            <button type="reset"
-                                                class="btn btn-outline-danger pull-right mr-5">Clear</button>
-                                            <button type="submit" class="btn btn-success pull-right ml-5">Filter</button>
-                                        </center>
+                                    <div class="col-md-4 mt-4">
+                                        <button type="submit" class="btn btn-success pull-right ml-5">Filter</button>
+                                        <button type="reset" class="btn btn-outline-danger pull-right">Clear</button>
                                     </div>
                                 </div>
                             </form>
@@ -69,34 +66,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($orders as $order)
-                                            <tr>
-                                                <td class="text-xs text-secondary mb-0">
-                                                    #{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
-                                                <td class="text-xs text-secondary mb-0">
-                                                    {{ format_currency($order->total) }}</td>
-                                                <td class="text-xs text-secondary mb-0">{{ $order->created_at }}</td>
-                                                <td class="text-xs text-secondary mb-0 text-left"><span
-                                                        class="badge badge-sm bg-gradient-{{ (new App\Models\Colors())->getColor($order['status']) }}">{{ App\Models\Cart::$status[$order['status']] }}</span>
-                                                </td>
-                                                <td class="text-xs text-secondary mb-0 text-end">
-                                                    <button onclick="viewOrder({{ $order->id }})"
-                                                        class="btn btn-sm btn-info">View</button>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="6" class="text-center text-xs text-danger">No Data Found
-                                                </td>
-                                            </tr>
-                                        @endforelse
+
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="row justify-content-end">
-                                <div class="mt-4">
-                                    {{ $orders->links() }}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -106,6 +78,42 @@
             @include('layouts.footer2')
 
             <script>
+                $(document).ready(function() {
+                    $('#usersTable').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'csv', 'pdf', 'print', 'copy'
+                        ],
+
+                        ajax: "{{ route('admin.orders') }}",
+                        columns: [{
+                                data: 'order_number',
+                                name: 'id'
+                            },
+                            {
+                                data: 'total',
+                                name: 'total'
+                            },
+                            {
+                                data: 'created_at',
+                                name: 'created_at'
+                            },
+                            {
+                                data: 'status_label',
+                                name: 'status'
+                            },
+                            {
+                                data: 'action',
+                                name: 'action',
+                                orderable: false,
+                                searchable: false
+                            },
+                        ]
+                    });
+                });
+
                 function viewOrder(id) {
                     showAlert('Are you sure to view this order ?', function() {
                         $.ajax({

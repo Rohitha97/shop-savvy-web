@@ -126,7 +126,7 @@
                                                 <div class="col-md-12">
                                                     <label for="price"><small class="text-dark">
                                                             Product Image{!! required_mark() !!}</small></label>
-                                                            <br>
+                                                    <br>
                                                     <label for="image">
                                                         <img id="imageview"
                                                             src="{{ asset('assets/img/products/default-product.png') }}"

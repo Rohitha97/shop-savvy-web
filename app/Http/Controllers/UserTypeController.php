@@ -19,52 +19,56 @@ class UserTypeController extends Controller
 
     public function add(Request $request)
     {
-        $request->validate([
-            'isnew' => 'required|in:1,2',
-            'usertype' => 'required',
-            'status' => 'required|in:1,2,3'
-        ]);
-
-        if ($request->isnew == 1) {
-            $usertype = UserType::create([
-                'usertype' => $request->usertype,
-                'status' => $request->status,
+        try {
+            $request->validate([
+                'isnew' => 'required|in:1,2',
+                'usertype' => 'required',
+                'status' => 'required|in:1,2,3'
             ]);
 
-            if ($request->has('permissions')) {
-                foreach ($request->permissions as $permisssion) {
+            if ($request->isnew == 1) {
+                $usertype = UserType::create([
+                    'usertype' => $request->usertype,
+                    'status' => $request->status,
+                ]);
+
+                if ($request->has('permissions')) {
+                    foreach ($request->permissions as $permisssion) {
+                        Permissions::create([
+                            'usertype' => $usertype->id,
+                            'route' => $permisssion
+                        ]);
+                    }
+                }
+            } else {
+                $request->validate([
+                    'record' => 'required|exists:user_types,id'
+                ]);
+                $data = [
+                    'usertype' => $request->usertype,
+                ];
+                $usertypeExists = UserType::where('id', $request->record)->with('permissiondata')->first();
+                $usertypeExists->update($data);
+                $newPermissions = $request->permissions ?? [];
+                foreach ($usertypeExists->permissiondata as $key => $value) {
+                    if (in_array($value->route, ($request->permissions ?? []))) {
+                        array_splice($newPermissions, array_search($value->route, $newPermissions), 1);
+                    } else {
+                        Permissions::where('id', $value->id)->delete();
+                    }
+                }
+
+                foreach ($newPermissions as $valueNew) {
                     Permissions::create([
-                        'usertype' => $usertype->id,
-                        'route' => $permisssion
+                        'usertype' => $usertypeExists->id,
+                        'route' => $valueNew
                     ]);
                 }
             }
-        } else {
-            $request->validate([
-                'record' => 'required|exists:user_types,id'
-            ]);
-            $data = [
-                'usertype' => $request->usertype,
-            ];
-            $usertypeExists = UserType::where('id', $request->record)->with('permissiondata')->first();
-            $usertypeExists->update($data);
-            $newPermissions = $request->permissions ?? [];
-            foreach ($usertypeExists->permissiondata as $key => $value) {
-                if (in_array($value->route, ($request->permissions ?? []))) {
-                    array_splice($newPermissions, array_search($value->route, $newPermissions), 1);
-                } else {
-                    Permissions::where('id', $value->id)->delete();
-                }
-            }
-
-            foreach ($newPermissions as $valueNew) {
-                Permissions::create([
-                    'usertype' => $usertypeExists->id,
-                    'route' => $valueNew
-                ]);
-            }
+            return redirect()->back()->with(['code' => 1, 'color' => 'success', 'msg' => 'Usertype & Permissions Successfully ' . (($request->isnew == 1) ? 'Registered' : 'Updated')]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['code' => 0, 'color' => 'danger', 'msg' => $e->getMessage()]);
         }
-        return redirect()->back()->with(['code' => 1, 'color' => 'success', 'msg' => 'Usertype & Permissions Successfully ' . (($request->isnew == 1) ? 'Registered' : 'Updated')]);
     }
 
     public function changeStatus($id, $status)
