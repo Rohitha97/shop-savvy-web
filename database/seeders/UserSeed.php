@@ -16,8 +16,8 @@ class UserSeed extends Seeder
             'password' => 'Admin@123',
         ],
         [
-            'name' => 'Store Manager',
-            'email' => 'store@gmail.com',
+            'name' => 'Cashire',
+            'email' => 'cashire@gmail.com',
             'password' => 'store@123',
         ],
         [

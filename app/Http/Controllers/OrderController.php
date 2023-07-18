@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartProduct;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Colors;
@@ -18,13 +19,17 @@ class OrderController extends Controller
         if ($request->ajax()) {
             $query = Cart::whereIn('status', [1, 4]);
 
-            if ($request->has('start') && $request->filled('start')) {
-                $query->where('created_at', '>=', $request->start);
+            if ($request->has('startDate') && $request->filled('startDate')) {
+                $startDate = Carbon::parse($request->startDate)->format('Y-m-d');
+                $query->whereDate('created_at', '>=', $startDate);
             }
 
-            if ($request->has('end') && $request->filled('end')) {
-                $query->where('created_at', '<', $request->end);
+            if ($request->has('endDate') && $request->filled('endDate')) {
+                $endDate = Carbon::parse($request->endDate)->format('Y-m-d');
+                $query->whereDate('created_at', '<', $endDate);
             }
+
+
 
             $orders = $query->orderBy('created_at', 'DESC');
 

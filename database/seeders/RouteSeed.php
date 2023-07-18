@@ -29,6 +29,10 @@ class RouteSeed extends Seeder
             'route' => '/products',
             'type' => '1',
         ],
+        [
+            'name' => 'Orders Management',
+            'route' => '/orders',
+            'type' => '1',
         ],
         [
             'name' => 'Stocks Management',

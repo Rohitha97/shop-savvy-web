@@ -42,15 +42,16 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" name="remember" id="remember"
-                                                {{ old('remember') ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="rememberMe">{{ __('Remember Me') }}</label>
-                                        </div>
                                         <div class="text-center">
                                             <button type="submit" class="btn bg-primary text-white w-100 mt-4 mb-0">Sign
                                                 in</button>
                                         </div>
+                                        <div class="text-center mt-3">
+                                            <a href="{{ route('password.request') }}" class="text-black">
+                                                <small>Forgot password?</small>
+                                            </a>
+                                        </div>
+
                                     </form>
                                 </div>
                             </div>

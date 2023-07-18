@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\StockController;
@@ -15,6 +16,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ro
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/logout', [UserController::class, 'logout'])->name('admin.logout');
+
 
 Route::prefix('/users')->group(function () {
     Route::get('/', [UserController::class, 'index'])->middleware(['auth', 'permitted'])->name('admin.users');
