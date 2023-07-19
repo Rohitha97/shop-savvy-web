@@ -13,7 +13,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0 w-100" id="usersTable">
+                                <table class="table align-items-center mb-0 w-100" id="productTable">
                                     <thead>
                                         <tr>
                                             <th
@@ -47,8 +47,11 @@
                                                 <td class="text-center text-xs text-secondary mb-0">{{ $product->qty }}</td>
                                                 <td class="text-xs text-secondary mb-0">
                                                     {{ format_currency($product->price) }}</td>
-                                                <td class="text-xs text-secondary mb-0 text-left"><span
-                                                        class="badge badge-sm bg-gradient-{{ (new App\Models\Colors())->getColor($product['status']) }}">{{ App\Models\Product::$status[$product['status']] }}</span>
+                                                <td class="text-xs text-secondary mb-0 text-left">
+                                                    <span
+                                                        class="badge badge-sm bg-gradient-{{ (new App\Models\Colors())->getColor($product['status']) }}">
+                                                        {{ App\Models\Product::$status[$product['status']] }}
+                                                    </span>
                                                 </td>
                                                 <td class="text-xs text-secondary mb-0 text-end">
                                                     <i onclick="doEdit({{ $product->id }})"
@@ -66,11 +69,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="row justify-content-end">
-                                <div class="mt-4">
-                                    {{ $products->links() }}
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,8 +76,7 @@
                     <form autocomplete="off" action="{{ route('admin.products.add') }}" enctype="multipart/form-data"
                         method="POST" id="addment_form">
                         @csrf
-                        <input type="hidden" id="isnew" name="isnew"
-                            value="{{ old('isnew') ? old('isnew') : '1' }}">
+                        <input type="hidden" id="isnew" name="isnew" value="{{ old('isnew') ? old('isnew') : '1' }}">
                         <input type="hidden" id="record" name="record"
                             value="{{ old('record') ? old('record') : '' }}">
                         <div class="card">
@@ -178,6 +175,26 @@
     </main>
 
     <script>
+        $(document).ready(function() {
+            $('#productTable').DataTable({
+                processing: true,
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'csv',
+                        title: 'Products',
+                        className: 'btn btn-info',
+                        text: '<i class="fa fa-file-csv"></i> CSV'
+                    },
+                    {
+                        extend: 'pdf',
+                        title: 'Products',
+                        className: 'btn btn-primary',
+                        text: '<i class="fa fa-file-pdf"></i> PDF'
+                    }
+                ],
+            });
+        });
+
         function doEdit(id) {
             showAlert('Are you sure to edit this record ?', function() {
                 $.ajax({

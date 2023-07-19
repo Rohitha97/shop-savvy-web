@@ -13,7 +13,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive p-0">
-                                <table class="table align-items-center mb-0 w-100" id="usersTable">
+                                <table class="table align-items-center mb-0 w-100" id="stocksTable">
                                     <thead>
                                         <tr>
                                             <th
@@ -33,11 +33,13 @@
                                     <tbody>
                                         @forelse ($stocks as $stock)
                                             <tr>
-                                                <td class="text-xs text-secondary mb-0">{{ $stock->productdata->name }}
-                                                </td>
+                                                <td class="text-xs text-secondary mb-0">{{ $stock->productdata->name }}</td>
                                                 <td class="text-center text-xs text-secondary mb-0">{{ $stock->rfid }}</td>
-                                                <td class="text-xs text-secondary mb-0 text-left"><span
-                                                        class="badge badge-sm bg-gradient-{{ (new App\Models\Colors())->getColor($stock['status']) }}">{{ App\Models\Stock::$status[$stock['status']] }}</span>
+                                                <td class="text-xs text-secondary mb-0 text-left">
+                                                    <span
+                                                        class="badge badge-sm bg-gradient-{{ (new App\Models\Colors())->getColor($stock['status']) }}">
+                                                        {{ App\Models\Stock::$status[$stock['status']] }}
+                                                    </span>
                                                 </td>
                                                 <td class="text-xs text-secondary mb-0 text-end">
                                                     <i onclick="doEdit({{ $stock->id }})"
@@ -54,11 +56,6 @@
                                         @endforelse
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="row justify-content-end">
-                                <div class="mt-4">
-                                    {{ $stocks->links() }}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -142,6 +139,26 @@
     </main>
 
     <script>
+        $(document).ready(function() {
+            $('#stocksTable').DataTable({
+                processing: true,
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'csv',
+                        title: 'Stocks Report',
+                        className: 'btn btn-info',
+                        text: '<i class="fa fa-file-csv"></i> CSV'
+                    },
+                    {
+                        extend: 'pdf',
+                        title: 'Stocks Report',
+                        className: 'btn btn-primary',
+                        text: '<i class="fa fa-file-pdf"></i> PDF'
+                    }
+                ],
+            });
+        });
+
         function doEdit(id) {
             showAlert('Are you sure to edit this record ?', function() {
                 $.ajax({
