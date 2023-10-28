@@ -43,10 +43,6 @@ Follow these steps to get the "Shop Savvy" project up and running:
 5. **Access the Application**: Open your web browser and visit `http://localhost:8000` to access the Shop Savvy application.
 
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
 ## Contact
 
 For questions or inquiries, please contact [rohith_rathnayake@yahoo.com].
