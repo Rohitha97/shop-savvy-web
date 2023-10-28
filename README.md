@@ -1,6 +1,7 @@
-# Shop Savvy - Mobile E-Commerce Self-Checkout System
+# Shop Savvy - Admin Project
 
-![Shop Savvy Logo](![favicon](https://github.com/Rohitha97/shop-savvy-web/assets/73746343/6f9e02fe-1b34-4833-9022-48e80b55e221).png)
+<p align="center"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/73746343/278825737-a8735fd6-2da8-4111-8a32-393cd9d88a3e.png" width="200" alt="Laravel Logo"></p>
+
 
 The "Shop Savvy" system is a mobile e-commerce-based self-checkout system designed to revolutionize the fashion retail experience in Sri Lanka. This project aims to provide convenience and efficiency to customers by enabling them to make purchases and complete the checkout process using their mobile devices. Through comprehensive research, evaluation, and implementation, the project has successfully achieved its goals.
 
@@ -31,7 +32,7 @@ The "Shop Savvy" system is a mobile e-commerce-based self-checkout system design
 
 Follow these steps to get the "Shop Savvy" project up and running:
 
-1. **Clone the Repository**: `git clone [repository URL]`
+1. **Clone the Repository**: `git clone [git@github.com:Rohitha97/shop-savvy-web.git]`
 
 2. **Install Dependencies**: Run `composer install` to install Laravel dependencies.
 
@@ -51,6 +52,4 @@ This project is licensed under the [MIT License](LICENSE).
 For questions or inquiries, please contact [rohith_rathnayake@yahoo.com].
 
 ---
-
-Feel free to update and customize this README file to match the specifics of your Laravel project, and provide more details about installation, usage, and any other relevant information.
 
